@@ -76,7 +76,7 @@ jobs:
         with:
           images: |
             ${{ steps.image-name.outputs.value }}
-            T-REX-XP/dex
+            he11kern/dex
           flavor: |
             latest = false
           tags: |
