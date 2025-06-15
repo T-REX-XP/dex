@@ -556,6 +556,14 @@ func getSynologyUsers(ctx context.Context) ([]User, error) {
 	mu.Lock()
 	defer mu.Unlock()
 
+	// Get Synology base URL from environment
+	synologyBaseURL := os.Getenv("SYNO_URL")
+	if synologyBaseURL == "" {
+		return nil, errors.New("SYNO_URL not set")
+	}
+	// Construct the full API URL
+	synologyAPIURL := synologyBaseURL + "/webapi/entry.cgi"
+
 	// This is how to authenticate with Synology.
 	// First, login to get a session cookie, then use that cookie to get the user list.
 	//   if ! resp=$(curl --cookie-jar /tmp/jar --cookie /tmp/jar -sS 'https://famille.vls.dev/webapi/entry.cgi' \
@@ -613,7 +621,7 @@ func getSynologyUsers(ctx context.Context) ([]User, error) {
 	form.Add("version", "6")
 	form.Add("account", user)
 	form.Add("passwd", passwd)
-	req, err := http.NewRequestWithContext(ctx, "POST", "https://famille.vls.dev/webapi/entry.cgi", strings.NewReader(form.Encode()))
+	req, err := http.NewRequestWithContext(ctx, "POST", synologyAPIURL, strings.NewReader(form.Encode()))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
@@ -638,7 +646,7 @@ func getSynologyUsers(ctx context.Context) ([]User, error) {
 	form.Add("offset", "0")
 	form.Add("limit", "-1")
 	form.Add("additional", `["email","description","expired","2fa_status"]`)
-	req, err = http.NewRequestWithContext(ctx, "POST", "https://famille.vls.dev/webapi/entry.cgi", strings.NewReader(form.Encode()))
+	req, err = http.NewRequestWithContext(ctx, "POST", synologyAPIURL, strings.NewReader(form.Encode()))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create request: %w", err)
 	}
