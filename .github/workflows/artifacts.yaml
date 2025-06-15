@@ -76,7 +76,7 @@ jobs:
         with:
           images: |
             ${{ steps.image-name.outputs.value }}
-            dexidp/dex
+            T-REX-XP/dex
           flavor: |
             latest = false
           tags: |
@@ -180,14 +180,14 @@ jobs:
       # - name: Generate build provenance attestation
       #   uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
       #   with:
-      #     subject-name: dexidp/dex
+      #     subject-name: T-REX-XP/dex
       #     subject-digest: ${{ steps.build.outputs.digest }}
       #     push-to-registry: true
 
       - name: Generate build provenance attestation
         uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
         with:
-          subject-name: ghcr.io/dexidp/dex
+          subject-name: ghcr.io/T-REX-XP/dex
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
         if: inputs.publish
