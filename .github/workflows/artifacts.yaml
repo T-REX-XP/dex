@@ -68,7 +68,9 @@ jobs:
 
       - name: Set image name
         id: image-name
-        run: echo "value=ghcr.io/${{ github.repository }}" >> "$GITHUB_OUTPUT"
+        run: |
+          repo=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "value=ghcr.io/$repo" >> "$GITHUB_OUTPUT"
 
       - name: Gather build metadata
         id: meta
@@ -76,7 +78,7 @@ jobs:
         with:
           images: |
             ${{ steps.image-name.outputs.value }}
-            he11kern/dex
+            t-rex-xp/dex
           flavor: |
             latest = false
           tags: |
@@ -180,14 +182,14 @@ jobs:
       # - name: Generate build provenance attestation
       #   uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
       #   with:
-      #     subject-name: he11kern/dex
+      #     subject-name: t-rex-xp/dex
       #     subject-digest: ${{ steps.build.outputs.digest }}
       #     push-to-registry: true
 
       - name: Generate build provenance attestation
         uses: actions/attest-build-provenance@db473fddc028af60658334401dc6fa3ffd8669fd # v2.3.0
         with:
-          subject-name: ghcr.io/he11kern/dex
+          subject-name: ghcr.io/t-rex-xp/dex
           subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
         if: inputs.publish
