@@ -36,7 +36,7 @@ jobs:
       matrix:
         variant:
           - alpine
-          - distroless
+          # - distroless
 
     permissions:
       attestations: write
